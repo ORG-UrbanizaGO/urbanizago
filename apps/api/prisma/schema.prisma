@@ -1,0 +1,410 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+enum Role {
+  CITIZEN
+  ADMIN
+}
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+  DELETED
+}
+enum OccurrenceStatus {
+  ABERTO
+  EM_ANALISE
+  EM_ATENDIMENTO
+  RESOLVIDO
+}
+enum Priority {
+  BAIXA
+  MEDIA
+  ALTA
+  URGENTE
+}
+enum ValidationStatus {
+  PENDENTE
+  VALIDADA
+  REJEITADA
+}
+enum SanctionType {
+  ADVERTENCIA
+  SUSPENSAO
+  BANIMENTO
+}
+enum SanctionStatus {
+  ATIVA
+  EXPIRADA
+  REVERTIDA
+}
+enum AppealStatus {
+  PENDENTE
+  ACEITO
+  NEGADO
+}
+enum DeletionStatus {
+  PENDENTE
+  CONCLUIDA
+  CANCELADA
+}
+enum DeliveryStatus {
+  PENDING
+  PROCESSING
+  SENT
+  FAILED
+}
+enum MedalLevel {
+  BRONZE
+  PRATA
+  OURO
+}
+model User {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  passwordHash String
+  role Role @default(CITIZEN)
+  status UserStatus @default(ACTIVE)
+  phone String?
+  avatar String?
+  neighborhood String?
+  hideFromRanking Boolean @default(false)
+  pushEnabled Boolean @default(true)
+  failedAttempts Int @default(0)
+  lockedUntil DateTime?
+  anonymizedAt DateTime?
+  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  refreshTokens RefreshToken[]
+  resetTokens PasswordResetToken[]
+  deletionToken AccountDeletionToken?
+  occurrences Occurrence[]
+  histories OccurrenceStatusHistory[]
+  comments OccurrenceComment[]
+  ratings OccurrenceRating[]
+  notifications Notification[]
+  deviceTokens DeviceToken[]
+  auditLogs AuditLog[]
+  points PointsLedger[]
+  medals UserMedal[]
+  sanctions Sanction[] @relation("SanctionTarget")
+  issuedSanctions Sanction[] @relation("SanctionAuthor")
+  appeals SanctionAppeal[] @relation("AppealOwner")
+  reviewedAppeals SanctionAppeal[] @relation("AppealReviewer")
+  deletions AccountDeletionRequest[] @relation("DeletionTarget")
+  requestedDeletions AccountDeletionRequest[] @relation("DeletionAuthor")
+  @@index([role, status])
+  @@index([neighborhood])
+}
+model RefreshToken {
+  id String @id @default(uuid())
+  hash String @unique
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  device String?
+  createdAt DateTime @default(now())
+  @@index([userId, expiresAt])
+}
+model PasswordResetToken {
+  id String @id @default(uuid())
+  hash String @unique
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([userId, expiresAt])
+}
+model Category {
+  id String @id @default(uuid())
+  code String @unique
+  name String
+  icon String
+  color String
+  active Boolean @default(true)
+  occurrences Occurrence[]
+  secretariats SecretariatCategory[]
+  recipients RecipientCategory[]
+}
+model Secretariat {
+  id String @id @default(uuid())
+  name String @unique
+  description String?
+  active Boolean @default(true)
+  categories SecretariatCategory[]
+  occurrences Occurrence[]
+  recipients NotificationRecipient[]
+}
+model SecretariatCategory {
+  secretariatId String
+  categoryId String
+  secretariat Secretariat @relation(fields: [secretariatId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  @@id([secretariatId, categoryId])
+  @@index([categoryId])
+}
+model Occurrence {
+  id String @id @default(uuid())
+  sequence Int @unique @default(autoincrement())
+  protocol String @unique
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  categoryId String
+  category Category @relation(fields: [categoryId], references: [id])
+  description String
+  latitude Float
+  longitude Float
+  address String
+  neighborhood String
+  city String
+  status OccurrenceStatus @default(ABERTO)
+  priority Priority @default(MEDIA)
+  secretariatId String?
+  secretariat Secretariat? @relation(fields: [secretariatId], references: [id])
+  validationStatus ValidationStatus @default(PENDENTE)
+  rejectionReason String?
+  duplicateOfId String?
+  duplicateOf Occurrence? @relation("Duplicates", fields: [duplicateOfId], references: [id])
+  duplicates Occurrence[] @relation("Duplicates")
+  validatedAt DateTime?
+  resolvedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  photos OccurrencePhoto[]
+  history OccurrenceStatusHistory[]
+  comments OccurrenceComment[]
+  rating OccurrenceRating?
+  emails EmailOutbox[]
+  notifications Notification[]
+  points PointsLedger[]
+  @@index([status, createdAt])
+  @@index([categoryId, createdAt])
+  @@index([neighborhood, createdAt])
+  @@index([latitude, longitude])
+  @@index([userId, createdAt])
+  @@index([secretariatId])
+  @@index([duplicateOfId])
+}
+model OccurrencePhoto {
+  id String @id @default(uuid())
+  occurrenceId String
+  occurrence Occurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  storageKey String @unique
+  sortOrder Int @default(0)
+  @@index([occurrenceId])
+}
+model OccurrenceStatusHistory {
+  id String @id @default(uuid())
+  occurrenceId String
+  occurrence Occurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  authorId String
+  author User @relation(fields: [authorId], references: [id])
+  previousStatus OccurrenceStatus?
+  newStatus OccurrenceStatus
+  observation String?
+  createdAt DateTime @default(now())
+  @@index([occurrenceId, createdAt])
+}
+model OccurrenceComment {
+  id String @id @default(uuid())
+  occurrenceId String
+  occurrence Occurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  authorId String
+  author User @relation(fields: [authorId], references: [id])
+  body String
+  createdAt DateTime @default(now())
+  @@index([occurrenceId])
+}
+model OccurrenceRating {
+  id String @id @default(uuid())
+  occurrenceId String @unique
+  occurrence Occurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  score Int
+  comment String?
+  createdAt DateTime @default(now())
+}
+model NotificationRecipient {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  active Boolean @default(false)
+  confirmedAt DateTime?
+  confirmationHash String?
+  confirmationExpiresAt DateTime?
+  secretariatId String?
+  secretariat Secretariat? @relation(fields: [secretariatId], references: [id])
+  categories RecipientCategory[]
+}
+model RecipientCategory {
+  recipientId String
+  categoryId String
+  recipient NotificationRecipient @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  @@id([recipientId, categoryId])
+}
+model EmailOutbox {
+  id String @id @default(uuid())
+  recipient String
+  subject String
+  body String
+  occurrenceId String?
+  occurrence Occurrence? @relation(fields: [occurrenceId], references: [id])
+  status DeliveryStatus @default(PENDING)
+  attempts Int @default(0)
+  error String?
+  nextAttemptAt DateTime @default(now())
+  sentAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([status, nextAttemptAt])
+}
+model Notification {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  occurrenceId String?
+  occurrence Occurrence? @relation(fields: [occurrenceId], references: [id])
+  type String
+  title String
+  message String
+  readAt DateTime?
+  pushStatus DeliveryStatus @default(PENDING)
+  pushAttempts Int @default(0)
+  pushNextAttemptAt DateTime @default(now())
+  createdAt DateTime @default(now())
+  @@index([userId, createdAt])
+  @@index([pushStatus, pushNextAttemptAt])
+}
+model DeviceToken {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token String @unique
+  platform String
+  createdAt DateTime @default(now())
+  @@index([userId])
+}
+model AuditLog {
+  id String @id @default(uuid())
+  authorId String?
+  author User? @relation(fields: [authorId], references: [id])
+  action String
+  entity String
+  entityId String?
+  details Json?
+  createdAt DateTime @default(now())
+  @@index([entity, entityId])
+}
+model PointsLedger {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  occurrenceId String?
+  occurrence Occurrence? @relation(fields: [occurrenceId], references: [id])
+  event String
+  eventKey String @unique
+  points Int
+  reason String
+  createdAt DateTime @default(now())
+  @@index([userId, createdAt])
+  @@index([occurrenceId])
+}
+model MedalDefinition {
+  id String @id @default(uuid())
+  code String @unique
+  name String
+  description String
+  categoryCodes String[] @default([])
+  bronze Int
+  silver Int
+  gold Int
+  userMedals UserMedal[]
+}
+model UserMedal {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medalId String
+  medal MedalDefinition @relation(fields: [medalId], references: [id])
+  level MedalLevel
+  achievedAt DateTime @default(now())
+  @@unique([userId, medalId])
+}
+model Sanction {
+  id String @id @default(uuid())
+  userId String
+  user User @relation("SanctionTarget", fields: [userId], references: [id])
+  authorId String
+  author User @relation("SanctionAuthor", fields: [authorId], references: [id])
+  type SanctionType
+  reason String
+  startsAt DateTime @default(now())
+  endsAt DateTime?
+  status SanctionStatus @default(ATIVA)
+  reversalReason String?
+  appeal SanctionAppeal?
+  @@index([userId, status])
+  @@index([status, endsAt])
+}
+model SanctionAppeal {
+  id String @id @default(uuid())
+  sanctionId String @unique
+  sanction Sanction @relation(fields: [sanctionId], references: [id])
+  userId String
+  user User @relation("AppealOwner", fields: [userId], references: [id])
+  text String
+  attachments String[] @default([])
+  status AppealStatus @default(PENDENTE)
+  response String?
+  reviewerId String?
+  reviewer User? @relation("AppealReviewer", fields: [reviewerId], references: [id])
+  reviewedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([status, createdAt])
+}
+model AccountDeletionRequest {
+  id String @id @default(uuid())
+  userId String
+  user User @relation("DeletionTarget", fields: [userId], references: [id])
+  requestedById String
+  requestedBy User @relation("DeletionAuthor", fields: [requestedById], references: [id])
+  effectiveAt DateTime
+  status DeletionStatus @default(PENDENTE)
+  reason String?
+  createdAt DateTime @default(now())
+  @@index([status, effectiveAt])
+}
+model BannedEmailHash {
+  hash String @id
+  createdAt DateTime @default(now())
+}
+model Setting {
+  key String @id
+  value Int
+}
+
+model Announcement {
+  id String @id @default(uuid())
+  title String
+  body String
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([active, createdAt])
+}
+
+model AccountDeletionToken {
+  userId String @id
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hash String
+  expiresAt DateTime
+  @@index([expiresAt])
+}

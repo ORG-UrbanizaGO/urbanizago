@@ -1,0 +1,40 @@
+{
+  "name": "urbanizago",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.13.0 <23",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n API,WEB \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "npm run dev -w @urbanizago/api",
+    "dev:web": "npm run dev -w @urbanizago/web-admin",
+    "dev:citizen": "npm run dev -w @urbanizago/mobile-citizen",
+    "dev:admin": "npm run dev -w @urbanizago/mobile-admin",
+    "build": "npm run build -w @urbanizago/api && npm run build -w @urbanizago/web-admin && npm run build -w @urbanizago/mobile-citizen && npm run build -w @urbanizago/mobile-admin",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:migrate": "npm run db:migrate -w @urbanizago/api",
+    "db:seed": "npm run db:seed -w @urbanizago/api",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down",
+    "db:generate": "npm run db:generate -w @urbanizago/api",
+    "db:seed:dev": "npm run db:seed:dev -w @urbanizago/api",
+    "test:smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.25.0",
+    "prettier": "^3.5.3",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.31.0"
+  }
+}

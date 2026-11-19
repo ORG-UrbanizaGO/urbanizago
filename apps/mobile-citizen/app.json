@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "UrbanizaGO Cidadão",
+    "slug": "urbanizago-citizen",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "urbanizago-citizen",
+    "android": {
+      "package": "com.urbanizago.citizen"
+    },
+    "ios": {
+      "bundleIdentifier": "com.urbanizago.citizen"
+    },
+    "experiments": {
+      "autolinkingModuleResolution": true
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-notifications",
+      "expo-image-picker",
+      "expo-location",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
+  }
+}

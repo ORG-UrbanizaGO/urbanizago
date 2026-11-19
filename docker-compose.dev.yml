@@ -1,0 +1,31 @@
+services:
+  api:
+    build:
+      target: build
+    user: node
+    command: sh -c "npm run db:migrate -w @urbanizago/api && npm run db:seed -w @urbanizago/api && npm run dev -w @urbanizago/api"
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./apps/api/src:/app/apps/api/src:ro
+      - ./apps/api/tsconfig.json:/app/apps/api/tsconfig.json:ro
+      - ./apps/api/prisma:/app/apps/api/prisma:ro
+  web-admin:
+    build:
+      target: deps
+    user: node
+    command: npm run dev -w @urbanizago/web-admin -- --port 8080
+    environment:
+      API_PROXY_TARGET: http://api:3000
+      WEB_PORT: 8080
+    volumes:
+      - ./apps/web-admin/src:/app/apps/web-admin/src:ro
+      - ./apps/web-admin/index.html:/app/apps/web-admin/index.html:ro
+      - ./apps/web-admin/vite.config.ts:/app/apps/web-admin/vite.config.ts:ro
+      - ./apps/web-admin/tsconfig.json:/app/apps/web-admin/tsconfig.json:ro
+      - ./packages/shared/src:/app/packages/shared/src:ro
+      - ./packages/icons/src:/app/packages/icons/src:ro
+      - ./packages/ui-tokens/src:/app/packages/ui-tokens/src:ro
+      - ./packages/app-ui/src:/app/packages/app-ui/src:ro
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://127.0.0.1:8080/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]

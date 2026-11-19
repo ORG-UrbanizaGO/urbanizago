@@ -1,0 +1,4877 @@
+openapi: 3.0.3
+info:
+  title: UrbanizaGO API
+  version: 1.0.0
+  description: API REST UrbanizaGO. Exemplos ilustrativos; schema Prisma e validações Zod são as fontes de implementação.
+servers:
+- url: /
+paths:
+  /health:
+    get:
+      summary: Saúde da API e conexão com banco
+      security: []
+      responses:
+        '200':
+          description: Serviço disponível
+          content:
+            application/json:
+              example:
+                status: ok
+                service: urbanizago-api
+  /api/v1/dashboard:
+    get:
+      summary: GET /dashboard
+      description: 'Acesso: ADMIN.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      open:
+                        type: integer
+                      analysis:
+                        type: integer
+                      inProgress:
+                        type: integer
+                      resolved:
+                        type: integer
+                      averageResolutionDays:
+                        type: integer
+                      byCategory:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            total:
+                              type: integer
+                      byNeighborhood:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            total:
+                              type: integer
+                      bySecretariat:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            total:
+                              type: integer
+                      timeline:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            total:
+                              type: integer
+                      recent:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            protocol:
+                              type: string
+                            userId:
+                              type: string
+                            categoryId:
+                              type: string
+                            description:
+                              type: string
+                            address:
+                              type: string
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            neighborhood:
+                              type: string
+                            city:
+                              type: string
+                            status:
+                              type: string
+                            priority:
+                              type: string
+                            validationStatus:
+                              type: string
+                            duplicateOfId:
+                              type: string
+                              nullable: true
+                            createdAt:
+                              type: string
+                            category:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                code:
+                                  type: string
+                                name:
+                                  type: string
+                                icon:
+                                  type: string
+                                color:
+                                  type: string
+                                active:
+                                  type: boolean
+                            secretariat:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                name:
+                                  type: string
+                                active:
+                                  type: boolean
+                                categories:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      categoryId:
+                                        type: string
+                                      secretariatId:
+                                        type: string
+                                      category:
+                                        type: object
+                                        properties:
+                                          id:
+                                            type: string
+                                          code:
+                                            type: string
+                                          name:
+                                            type: string
+                                          icon:
+                                            type: string
+                                          color:
+                                            type: string
+                                          active:
+                                            type: boolean
+                            photos:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  url:
+                                    type: string
+                                  sortOrder:
+                                    type: integer
+                      heatmap:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            weight:
+                              type: integer
+              example:
+                data: &id002
+                  total: 1
+                  open: 1
+                  analysis: 0
+                  inProgress: 0
+                  resolved: 0
+                  averageResolutionDays: 0
+                  byCategory:
+                  - name: Buracos em vias públicas
+                    total: 1
+                  byNeighborhood:
+                  - name: Centro
+                    total: 1
+                  bySecretariat:
+                  - name: Obras
+                    total: 1
+                  timeline:
+                  - name: '2026-11-18'
+                    total: 1
+                  recent:
+                  - &id016
+                    id: 00000000-0000-4000-8000-000000000001
+                    protocol: '#OG2026-000123'
+                    userId: 00000000-0000-4000-8000-000000000001
+                    categoryId: 00000000-0000-4000-8000-000000000001
+                    description: Buraco na rua
+                    address: Rua Exemplo, 1
+                    latitude: -15.0
+                    longitude: -48.0
+                    neighborhood: Centro
+                    city: Cidade Exemplo
+                    status: ABERTO
+                    priority: MEDIA
+                    validationStatus: PENDENTE
+                    duplicateOfId: null
+                    createdAt: '2026-11-18T12:00:00Z'
+                    category: &id001
+                      id: 00000000-0000-4000-8000-000000000001
+                      code: POTHOLE
+                      name: Buracos em vias públicas
+                      icon: pothole
+                      color: '#D97706'
+                      active: true
+                    secretariat: &id009
+                      id: 00000000-0000-4000-8000-000000000001
+                      name: Obras
+                      active: true
+                      categories: &id011
+                      - categoryId: 00000000-0000-4000-8000-000000000001
+                        secretariatId: 00000000-0000-4000-8000-000000000001
+                        category: *id001
+                    photos: &id019
+                    - id: 00000000-0000-4000-8000-000000000001
+                      url: /api/v1/media/token-assinado
+                      sortOrder: 0
+                  heatmap: &id018
+                  - latitude: -15.0
+                    longitude: -48.0
+                    weight: 1
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: categoryId
+        in: query
+        schema:
+          type: string
+      - name: secretariatId
+        in: query
+        schema:
+          type: string
+      - name: neighborhood
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: from
+        in: query
+        schema:
+          type: string
+      - name: to
+        in: query
+        schema:
+          type: string
+  /api/v1/reports:
+    get:
+      summary: GET /reports
+      description: 'Acesso: ADMIN.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      open:
+                        type: integer
+                      analysis:
+                        type: integer
+                      inProgress:
+                        type: integer
+                      resolved:
+                        type: integer
+                      averageResolutionDays:
+                        type: integer
+                      byCategory:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            total:
+                              type: integer
+                      byNeighborhood:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            total:
+                              type: integer
+                      bySecretariat:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            total:
+                              type: integer
+                      timeline:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            total:
+                              type: integer
+                      recent:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            protocol:
+                              type: string
+                            userId:
+                              type: string
+                            categoryId:
+                              type: string
+                            description:
+                              type: string
+                            address:
+                              type: string
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            neighborhood:
+                              type: string
+                            city:
+                              type: string
+                            status:
+                              type: string
+                            priority:
+                              type: string
+                            validationStatus:
+                              type: string
+                            duplicateOfId:
+                              type: string
+                              nullable: true
+                            createdAt:
+                              type: string
+                            category:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                code:
+                                  type: string
+                                name:
+                                  type: string
+                                icon:
+                                  type: string
+                                color:
+                                  type: string
+                                active:
+                                  type: boolean
+                            secretariat:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                name:
+                                  type: string
+                                active:
+                                  type: boolean
+                                categories:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      categoryId:
+                                        type: string
+                                      secretariatId:
+                                        type: string
+                                      category:
+                                        type: object
+                                        properties:
+                                          id:
+                                            type: string
+                                          code:
+                                            type: string
+                                          name:
+                                            type: string
+                                          icon:
+                                            type: string
+                                          color:
+                                            type: string
+                                          active:
+                                            type: boolean
+                            photos:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  url:
+                                    type: string
+                                  sortOrder:
+                                    type: integer
+                      heatmap:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            weight:
+                              type: integer
+              example:
+                data: *id002
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: categoryId
+        in: query
+        schema:
+          type: string
+      - name: secretariatId
+        in: query
+        schema:
+          type: string
+      - name: neighborhood
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: from
+        in: query
+        schema:
+          type: string
+      - name: to
+        in: query
+        schema:
+          type: string
+  /api/v1/reports/export:
+    get:
+      summary: GET /reports/export
+      description: 'Acesso: ADMIN.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Arquivo CSV ou PDF
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: categoryId
+        in: query
+        schema:
+          type: string
+      - name: secretariatId
+        in: query
+        schema:
+          type: string
+      - name: neighborhood
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: from
+        in: query
+        schema:
+          type: string
+      - name: to
+        in: query
+        schema:
+          type: string
+      - name: format
+        in: query
+        schema:
+          type: string
+  /api/v1/gamification/ranking:
+    get:
+      summary: GET /gamification/ranking
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            position:
+                              type: integer
+                            isMe:
+                              type: boolean
+                            name:
+                              type: string
+                            points:
+                              type: integer
+                            medals:
+                              type: array
+                              items: {}
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+                      me:
+                        type: object
+                        properties:
+                          position:
+                            type: integer
+                          isMe:
+                            type: boolean
+                          name:
+                            type: string
+                          points:
+                            type: integer
+                          medals:
+                            type: array
+                            items: {}
+              example:
+                data:
+                  items:
+                  - &id003
+                    position: 1
+                    isMe: true
+                    name: Cidadão E.
+                    points: 10
+                    medals: []
+                  total: 1
+                  page: 1
+                  limit: 20
+                  me: *id003
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: period
+        in: query
+        schema:
+          type: string
+      - name: scope
+        in: query
+        schema:
+          type: string
+      - name: neighborhood
+        in: query
+        schema:
+          type: string
+  /api/v1/gamification/medals:
+    get:
+      summary: GET /gamification/medals
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        code:
+                          type: string
+                        description:
+                          type: string
+                        bronze:
+                          type: integer
+                        silver:
+                          type: integer
+                        gold:
+                          type: integer
+                        count:
+                          type: integer
+                        level:
+                          type: string
+                          nullable: true
+                        nextGoal:
+                          type: integer
+              example:
+                data:
+                - &id005
+                  id: 00000000-0000-4000-8000-000000000001
+                  name: Fiscal da Cidade
+                  code: CITY
+                  description: Registros validados
+                  bronze: 5
+                  silver: 25
+                  gold: 100
+                  count: 1
+                  level: null
+                  nextGoal: 5
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+  /api/v1/gamification/points:
+    get:
+      summary: GET /gamification/points
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        points:
+                          type: integer
+                        reason:
+                          type: string
+                        event:
+                          type: string
+                        occurrenceId:
+                          type: string
+                        createdAt:
+                          type: string
+              example:
+                data:
+                - &id004
+                  id: 00000000-0000-4000-8000-000000000001
+                  points: 10
+                  reason: Registro validado
+                  event: VALIDATED
+                  occurrenceId: 00000000-0000-4000-8000-000000000001
+                  createdAt: '2026-11-18T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+  /api/v1/gamification/users/{id}/points:
+    get:
+      summary: GET /gamification/users/:id/points
+      description: 'Acesso: ADMIN.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        points:
+                          type: integer
+                        reason:
+                          type: string
+                        event:
+                          type: string
+                        occurrenceId:
+                          type: string
+                        createdAt:
+                          type: string
+              example:
+                data:
+                - *id004
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+  /api/v1/gamification/settings:
+    get:
+      summary: GET /gamification/settings
+      description: 'Acesso: ADMIN.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      radius:
+                        type: integer
+                      hours:
+                        type: integer
+                      bonus:
+                        type: integer
+                      medals:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            code:
+                              type: string
+                            description:
+                              type: string
+                            bronze:
+                              type: integer
+                            silver:
+                              type: integer
+                            gold:
+                              type: integer
+                            count:
+                              type: integer
+                            level:
+                              type: string
+                              nullable: true
+                            nextGoal:
+                              type: integer
+              example:
+                data:
+                  radius: 50
+                  hours: 72
+                  bonus: 15
+                  medals:
+                  - *id005
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+    patch:
+      summary: PATCH /gamification/settings
+      description: 'Acesso: ADMIN.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      radius:
+                        type: integer
+                      hours:
+                        type: integer
+                      bonus:
+                        type: integer
+              example:
+                data:
+                  radius: 50
+                  hours: 72
+                  bonus: 15
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                duplicateRadius:
+                  type: integer
+                duplicateHours:
+                  type: integer
+                monthlyBonus:
+                  type: integer
+            example:
+              duplicateRadius: 50
+              duplicateHours: 72
+              monthlyBonus: 15
+  /api/v1/gamification/medals/{id}:
+    patch:
+      summary: PATCH /gamification/medals/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - analytics
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      code:
+                        type: string
+                      description:
+                        type: string
+                      bronze:
+                        type: integer
+                      silver:
+                        type: integer
+                      gold:
+                        type: integer
+                      count:
+                        type: integer
+                      level:
+                        type: string
+                        nullable: true
+                      nextGoal:
+                        type: integer
+              example:
+                data: *id005
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bronze:
+                  type: integer
+                silver:
+                  type: integer
+                gold:
+                  type: integer
+            example:
+              bronze: 5
+              silver: 25
+              gold: 100
+  /api/v1/auth/register:
+    post:
+      summary: POST /auth/register
+      description: 'Acesso: Público.'
+      tags:
+      - auth
+      security: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      status:
+                        type: string
+                      neighborhood:
+                        type: string
+              example:
+                data: &id006
+                  id: 00000000-0000-4000-8000-000000000001
+                  name: Cidadão Exemplo
+                  email: cidadao@urbanizago.local
+                  role: CITIZEN
+                  status: ACTIVE
+                  neighborhood: Centro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                neighborhood:
+                  type: string
+            example:
+              name: Maria Teste
+              email: maria@example.com
+              password: Example-2026!
+              neighborhood: Centro
+  /api/v1/auth/login:
+    post:
+      summary: POST /auth/login
+      description: 'Acesso: Público.'
+      tags:
+      - auth
+      security: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          role:
+                            type: string
+                          status:
+                            type: string
+                          neighborhood:
+                            type: string
+                      accessToken:
+                        type: string
+                      refreshToken:
+                        type: string
+                      restricted:
+                        type: boolean
+              example:
+                data: &id007
+                  user: *id006
+                  accessToken: jwt-exemplo
+                  refreshToken: token-opaco-exemplo
+                  restricted: false
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                client:
+                  type: string
+            example:
+              email: admin@urbanizago.local
+              password: UrbanizaGO-dev-2026!
+              client: mobile
+  /api/v1/auth/refresh:
+    post:
+      summary: POST /auth/refresh
+      description: 'Acesso: Público.'
+      tags:
+      - auth
+      security: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          role:
+                            type: string
+                          status:
+                            type: string
+                          neighborhood:
+                            type: string
+                      accessToken:
+                        type: string
+                      refreshToken:
+                        type: string
+                      restricted:
+                        type: boolean
+              example:
+                data: *id007
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                client:
+                  type: string
+                refreshToken:
+                  type: string
+            example:
+              client: mobile
+              refreshToken: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  /api/v1/auth/logout:
+    post:
+      summary: POST /auth/logout
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - auth
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                data:
+                  message: Sessão encerrada.
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                client:
+                  type: string
+                refreshToken:
+                  type: string
+            example:
+              client: mobile
+              refreshToken: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  /api/v1/auth/forgot-password:
+    post:
+      summary: POST /auth/forgot-password
+      description: 'Acesso: Público.'
+      tags:
+      - auth
+      security: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                data:
+                  message: Se o e-mail existir, enviaremos instruções.
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+            example:
+              email: maria@example.com
+  /api/v1/auth/verify-reset:
+    post:
+      summary: POST /auth/verify-reset
+      description: 'Acesso: Público.'
+      tags:
+      - auth
+      security: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      valid:
+                        type: boolean
+              example:
+                data:
+                  valid: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+            example:
+              token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  /api/v1/auth/reset-password:
+    post:
+      summary: POST /auth/reset-password
+      description: 'Acesso: Público.'
+      tags:
+      - auth
+      security: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                data:
+                  message: Senha redefinida.
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                password:
+                  type: string
+            example:
+              token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+              password: NovaSenha-2026!
+  /api/v1/categories:
+    get:
+      summary: GET /categories
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        code:
+                          type: string
+                        name:
+                          type: string
+                        icon:
+                          type: string
+                        color:
+                          type: string
+                        active:
+                          type: boolean
+              example:
+                data:
+                - *id001
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+    post:
+      summary: POST /categories
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      code:
+                        type: string
+                      name:
+                        type: string
+                      icon:
+                        type: string
+                      color:
+                        type: string
+                      active:
+                        type: boolean
+              example:
+                data: *id001
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  type: string
+                icon:
+                  type: string
+                color:
+                  type: string
+                active:
+                  type: boolean
+            example: &id008
+              code: OTHER
+              name: Outros
+              icon: more
+              color: '#64748B'
+              active: true
+  /api/v1/categories/{id}:
+    patch:
+      summary: PATCH /categories/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      code:
+                        type: string
+                      name:
+                        type: string
+                      icon:
+                        type: string
+                      color:
+                        type: string
+                      active:
+                        type: boolean
+              example:
+                data: *id001
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  type: string
+                icon:
+                  type: string
+                color:
+                  type: string
+                active:
+                  type: boolean
+            example: *id008
+    delete:
+      summary: DELETE /categories/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      code:
+                        type: string
+                      name:
+                        type: string
+                      icon:
+                        type: string
+                      color:
+                        type: string
+                      active:
+                        type: boolean
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  code: POTHOLE
+                  name: Buracos em vias públicas
+                  icon: pothole
+                  color: '#D97706'
+                  active: false
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /api/v1/secretariats:
+    get:
+      summary: GET /secretariats
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        active:
+                          type: boolean
+                        categories:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              categoryId:
+                                type: string
+                              secretariatId:
+                                type: string
+                              category:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  code:
+                                    type: string
+                                  name:
+                                    type: string
+                                  icon:
+                                    type: string
+                                  color:
+                                    type: string
+                                  active:
+                                    type: boolean
+              example:
+                data:
+                - *id009
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+    post:
+      summary: POST /secretariats
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      active:
+                        type: boolean
+                      categories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            categoryId:
+                              type: string
+                            secretariatId:
+                              type: string
+                            category:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                code:
+                                  type: string
+                                name:
+                                  type: string
+                                icon:
+                                  type: string
+                                color:
+                                  type: string
+                                active:
+                                  type: boolean
+              example:
+                data: *id009
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                categoryIds:
+                  type: array
+                  items: {}
+            example: &id010
+              name: Obras
+              description: Manutenção
+              categoryIds: []
+  /api/v1/secretariats/{id}:
+    patch:
+      summary: PATCH /secretariats/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      active:
+                        type: boolean
+                      categories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            categoryId:
+                              type: string
+                            secretariatId:
+                              type: string
+                            category:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                code:
+                                  type: string
+                                name:
+                                  type: string
+                                icon:
+                                  type: string
+                                color:
+                                  type: string
+                                active:
+                                  type: boolean
+              example:
+                data: *id009
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                categoryIds:
+                  type: array
+                  items: {}
+            example: *id010
+    delete:
+      summary: DELETE /secretariats/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      active:
+                        type: boolean
+                      categories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            categoryId:
+                              type: string
+                            secretariatId:
+                              type: string
+                            category:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                code:
+                                  type: string
+                                name:
+                                  type: string
+                                icon:
+                                  type: string
+                                color:
+                                  type: string
+                                active:
+                                  type: boolean
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  name: Obras
+                  active: false
+                  categories: *id011
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /api/v1/users/me:
+    get:
+      summary: GET /users/me
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      status:
+                        type: string
+                      neighborhood:
+                        type: string
+                      points:
+                        type: integer
+                      registered:
+                        type: integer
+                      resolved:
+                        type: integer
+                      medals:
+                        type: array
+                        items: {}
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  name: Cidadão Exemplo
+                  email: cidadao@urbanizago.local
+                  role: CITIZEN
+                  status: ACTIVE
+                  neighborhood: Centro
+                  points: 10
+                  registered: 1
+                  resolved: 0
+                  medals: []
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+    patch:
+      summary: PATCH /users/me
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      status:
+                        type: string
+                      neighborhood:
+                        type: string
+              example:
+                data: *id006
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                hideFromRanking:
+                  type: boolean
+            example:
+              name: Maria
+              hideFromRanking: false
+  /api/v1/users/me/password:
+    post:
+      summary: POST /users/me/password
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                data:
+                  message: Senha alterada. Faça login novamente.
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+            example:
+              currentPassword: Example-2026!
+              newPassword: NovaSenha-2026!
+  /api/v1/users/me/device:
+    post:
+      summary: POST /users/me/device
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      registered:
+                        type: boolean
+              example:
+                data:
+                  registered: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                platform:
+                  type: string
+            example:
+              token: ExponentPushToken[exemplo]
+              platform: android
+  /api/v1/users:
+    get:
+      summary: GET /users
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            role:
+                              type: string
+                            status:
+                              type: string
+                            neighborhood:
+                              type: string
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+              example:
+                data:
+                  items:
+                  - *id006
+                  total: 1
+                  page: 1
+                  limit: 20
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: q
+        in: query
+        schema:
+          type: string
+  /api/v1/users/admin:
+    post:
+      summary: POST /users/admin
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      status:
+                        type: string
+                      neighborhood:
+                        type: string
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  name: Cidadão Exemplo
+                  email: cidadao@urbanizago.local
+                  role: ADMIN
+                  status: ACTIVE
+                  neighborhood: Centro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+            example:
+              name: Gestor
+              email: gestor@example.com
+              password: Example-2026!
+  /api/v1/users/{id}/block:
+    patch:
+      summary: PATCH /users/:id/block
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      blocked:
+                        type: boolean
+              example:
+                data:
+                  blocked: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                blocked:
+                  type: boolean
+                reason:
+                  type: string
+            example:
+              blocked: true
+              reason: Uso indevido
+  /api/v1/notifications:
+    get:
+      summary: GET /notifications
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            title:
+                              type: string
+                            message:
+                              type: string
+                            readAt:
+                              type: string
+                              nullable: true
+                            createdAt:
+                              type: string
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+              example:
+                data:
+                  items:
+                  - id: 00000000-0000-4000-8000-000000000001
+                    title: Ocorrência atualizada
+                    message: Em análise
+                    readAt: null
+                    createdAt: '2026-11-18T12:00:00Z'
+                  total: 1
+                  page: 1
+                  limit: 20
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+  /api/v1/notifications/read-all:
+    patch:
+      summary: PATCH /notifications/read-all
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      read:
+                        type: boolean
+              example:
+                data:
+                  read: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            example: {}
+  /api/v1/notifications/{id}/read:
+    patch:
+      summary: PATCH /notifications/:id/read
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      read:
+                        type: boolean
+              example:
+                data:
+                  read: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            example: {}
+  /api/v1/recipients:
+    get:
+      summary: GET /recipients
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        active:
+                          type: boolean
+                        confirmedAt:
+                          type: string
+                          nullable: true
+                        secretariatId:
+                          type: string
+                          nullable: true
+                        categories:
+                          type: array
+                          items: {}
+              example:
+                data:
+                - &id012
+                  id: 00000000-0000-4000-8000-000000000001
+                  name: Obras
+                  email: obras@urbanizago.local
+                  active: false
+                  confirmedAt: null
+                  secretariatId: null
+                  categories: []
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+    post:
+      summary: POST /recipients
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      active:
+                        type: boolean
+                      confirmedAt:
+                        type: string
+                        nullable: true
+                      secretariatId:
+                        type: string
+                        nullable: true
+                      categories:
+                        type: array
+                        items: {}
+              example:
+                data: *id012
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                categoryIds:
+                  type: array
+                  items: {}
+            example: &id013
+              name: Obras
+              email: obras@example.com
+              categoryIds: []
+  /api/v1/recipients/{id}:
+    patch:
+      summary: PATCH /recipients/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      active:
+                        type: boolean
+                      confirmedAt:
+                        type: string
+                        nullable: true
+                      secretariatId:
+                        type: string
+                        nullable: true
+                      categories:
+                        type: array
+                        items: {}
+              example:
+                data: *id012
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                categoryIds:
+                  type: array
+                  items: {}
+            example: *id013
+    delete:
+      summary: DELETE /recipients/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      deleted:
+                        type: boolean
+              example:
+                data:
+                  deleted: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /api/v1/recipients/{id}/confirm:
+    post:
+      summary: POST /recipients/:id/confirm
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      confirmed:
+                        type: boolean
+              example:
+                data:
+                  confirmed: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+            example:
+              token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  /api/v1/recipients/{id}/test:
+    post:
+      summary: POST /recipients/:id/test
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      queued:
+                        type: boolean
+              example:
+                data:
+                  queued: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            example: {}
+  /api/v1/email-logs:
+    get:
+      summary: GET /email-logs
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            recipient:
+                              type: string
+                            subject:
+                              type: string
+                            status:
+                              type: string
+                            attempts:
+                              type: integer
+                            error:
+                              type: string
+                              nullable: true
+                            occurrenceId:
+                              type: string
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+              example:
+                data:
+                  items:
+                  - id: 00000000-0000-4000-8000-000000000001
+                    recipient: obras@urbanizago.local
+                    subject: Nova ocorrência
+                    status: SENT
+                    attempts: 1
+                    error: null
+                    occurrenceId: 00000000-0000-4000-8000-000000000001
+                  total: 1
+                  page: 1
+                  limit: 20
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+  /api/v1/moderation/me:
+    get:
+      summary: GET /moderation/me
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        userId:
+                          type: string
+                        type:
+                          type: string
+                        reason:
+                          type: string
+                        status:
+                          type: string
+                        startsAt:
+                          type: string
+                        endsAt:
+                          type: string
+                          nullable: true
+                        appeal:
+                          type: string
+                          nullable: true
+              example:
+                data:
+                - &id014
+                  id: 00000000-0000-4000-8000-000000000001
+                  userId: 00000000-0000-4000-8000-000000000001
+                  type: ADVERTENCIA
+                  reason: Registro falso
+                  status: ATIVA
+                  startsAt: '2026-11-18T12:00:00Z'
+                  endsAt: null
+                  appeal: null
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+  /api/v1/moderation/users/{id}:
+    get:
+      summary: GET /moderation/users/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          role:
+                            type: string
+                          status:
+                            type: string
+                          neighborhood:
+                            type: string
+                      sanctions:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            userId:
+                              type: string
+                            type:
+                              type: string
+                            reason:
+                              type: string
+                            status:
+                              type: string
+                            startsAt:
+                              type: string
+                            endsAt:
+                              type: string
+                              nullable: true
+                            appeal:
+                              type: string
+                              nullable: true
+                      occurrences:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            protocol:
+                              type: string
+                            userId:
+                              type: string
+                            categoryId:
+                              type: string
+                            description:
+                              type: string
+                            address:
+                              type: string
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            neighborhood:
+                              type: string
+                            city:
+                              type: string
+                            status:
+                              type: string
+                            priority:
+                              type: string
+                            validationStatus:
+                              type: string
+                            duplicateOfId:
+                              type: string
+                              nullable: true
+                            createdAt:
+                              type: string
+                      points:
+                        type: integer
+              example:
+                data:
+                  user: *id006
+                  sanctions:
+                  - *id014
+                  occurrences:
+                  - &id017
+                    id: 00000000-0000-4000-8000-000000000001
+                    protocol: '#OG2026-000123'
+                    userId: 00000000-0000-4000-8000-000000000001
+                    categoryId: 00000000-0000-4000-8000-000000000001
+                    description: Buraco na rua
+                    address: Rua Exemplo, 1
+                    latitude: -15.0
+                    longitude: -48.0
+                    neighborhood: Centro
+                    city: Cidade Exemplo
+                    status: ABERTO
+                    priority: MEDIA
+                    validationStatus: PENDENTE
+                    duplicateOfId: null
+                    createdAt: '2026-11-18T12:00:00Z'
+                  points: 10
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /api/v1/moderation/users/{id}/sanctions:
+    post:
+      summary: POST /moderation/users/:id/sanctions
+      description: 'Acesso: ADMIN.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      userId:
+                        type: string
+                      type:
+                        type: string
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      startsAt:
+                        type: string
+                      endsAt:
+                        type: string
+                        nullable: true
+                      appeal:
+                        type: string
+                        nullable: true
+              example:
+                data: *id014
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                reason:
+                  type: string
+                days:
+                  type: integer
+            example:
+              type: SUSPENSAO
+              reason: Spam reiterado
+              days: 7
+  /api/v1/moderation/sanctions/{id}/reverse:
+    post:
+      summary: POST /moderation/sanctions/:id/reverse
+      description: 'Acesso: ADMIN.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      reversed:
+                        type: boolean
+              example:
+                data:
+                  reversed: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+            example:
+              reason: Revisão administrativa
+  /api/v1/appeals:
+    post:
+      summary: POST /appeals
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      sanctionId:
+                        type: string
+                      text:
+                        type: string
+                      status:
+                        type: string
+                      attachments:
+                        type: array
+                        items: {}
+                      sanction:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          userId:
+                            type: string
+                          type:
+                            type: string
+                          reason:
+                            type: string
+                          status:
+                            type: string
+                          startsAt:
+                            type: string
+                          endsAt:
+                            type: string
+                            nullable: true
+                          appeal:
+                            type: string
+                            nullable: true
+              example:
+                data: &id015
+                  id: 00000000-0000-4000-8000-000000000001
+                  sanctionId: 00000000-0000-4000-8000-000000000001
+                  text: Solicito revisão
+                  status: PENDENTE
+                  attachments: []
+                  sanction: *id014
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sanctionId:
+                  type: string
+                text:
+                  type: string
+            example:
+              sanctionId: 00000000-0000-4000-8000-000000000001
+              text: Solicito revisão.
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - sanctionId
+              - text
+              properties:
+                sanctionId:
+                  type: string
+                  format: uuid
+                text:
+                  type: string
+                attachments:
+                  type: array
+                  maxItems: 3
+                  items:
+                    type: string
+                    format: binary
+    get:
+      summary: GET /appeals
+      description: 'Acesso: ADMIN.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        sanctionId:
+                          type: string
+                        text:
+                          type: string
+                        status:
+                          type: string
+                        attachments:
+                          type: array
+                          items: {}
+                        sanction:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            userId:
+                              type: string
+                            type:
+                              type: string
+                            reason:
+                              type: string
+                            status:
+                              type: string
+                            startsAt:
+                              type: string
+                            endsAt:
+                              type: string
+                              nullable: true
+                            appeal:
+                              type: string
+                              nullable: true
+              example:
+                data:
+                - *id015
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: status
+        in: query
+        schema:
+          type: string
+  /api/v1/appeals/{id}:
+    patch:
+      summary: PATCH /appeals/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      reviewed:
+                        type: boolean
+              example:
+                data:
+                  reviewed: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                response:
+                  type: string
+            example:
+              status: ACEITO
+              response: Recurso procedente.
+  /api/v1/moderation/occurrences/{id}:
+    patch:
+      summary: PATCH /moderation/occurrences/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      updated:
+                        type: boolean
+              example:
+                data:
+                  updated: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                reason:
+                  type: string
+            example:
+              action: reject
+              reason: Registro falso
+  /api/v1/account/delete:
+    post:
+      summary: POST /account/delete
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      deleted:
+                        type: boolean
+              example:
+                data:
+                  deleted: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                token:
+                  type: string
+            example:
+              password: Example-2026!
+              token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  /api/v1/account/users/{id}:
+    delete:
+      summary: DELETE /account/users/:id
+      description: 'Acesso: ADMIN.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      deleted:
+                        type: boolean
+              example:
+                data:
+                  deleted: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+            example:
+              reason: Solicitação verificada
+  /api/v1/occurrences:
+    get:
+      summary: GET /occurrences
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - occurrences
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            protocol:
+                              type: string
+                            userId:
+                              type: string
+                            categoryId:
+                              type: string
+                            description:
+                              type: string
+                            address:
+                              type: string
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            neighborhood:
+                              type: string
+                            city:
+                              type: string
+                            status:
+                              type: string
+                            priority:
+                              type: string
+                            validationStatus:
+                              type: string
+                            duplicateOfId:
+                              type: string
+                              nullable: true
+                            createdAt:
+                              type: string
+                            category:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                code:
+                                  type: string
+                                name:
+                                  type: string
+                                icon:
+                                  type: string
+                                color:
+                                  type: string
+                                active:
+                                  type: boolean
+                            secretariat:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                name:
+                                  type: string
+                                active:
+                                  type: boolean
+                                categories:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      categoryId:
+                                        type: string
+                                      secretariatId:
+                                        type: string
+                                      category:
+                                        type: object
+                                        properties:
+                                          id:
+                                            type: string
+                                          code:
+                                            type: string
+                                          name:
+                                            type: string
+                                          icon:
+                                            type: string
+                                          color:
+                                            type: string
+                                          active:
+                                            type: boolean
+                            photos:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  url:
+                                    type: string
+                                  sortOrder:
+                                    type: integer
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+              example:
+                data:
+                  items:
+                  - *id016
+                  total: 1
+                  page: 1
+                  limit: 20
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: categoryId
+        in: query
+        schema:
+          type: string
+      - name: secretariatId
+        in: query
+        schema:
+          type: string
+      - name: neighborhood
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: from
+        in: query
+        schema:
+          type: string
+      - name: to
+        in: query
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: string
+      - name: mine
+        in: query
+        schema:
+          type: string
+      - name: group
+        in: query
+        schema:
+          type: string
+    post:
+      summary: POST /occurrences
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - occurrences
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      protocol:
+                        type: string
+                      userId:
+                        type: string
+                      categoryId:
+                        type: string
+                      description:
+                        type: string
+                      address:
+                        type: string
+                      latitude:
+                        type: number
+                      longitude:
+                        type: number
+                      neighborhood:
+                        type: string
+                      city:
+                        type: string
+                      status:
+                        type: string
+                      priority:
+                        type: string
+                      validationStatus:
+                        type: string
+                      duplicateOfId:
+                        type: string
+                        nullable: true
+                      createdAt:
+                        type: string
+              example:
+                data: *id017
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                categoryId:
+                  type: string
+                description:
+                  type: string
+                latitude:
+                  type: number
+                longitude:
+                  type: number
+                address:
+                  type: string
+                neighborhood:
+                  type: string
+                city:
+                  type: string
+                photos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+              required:
+              - categoryId
+              - description
+              - latitude
+              - longitude
+              - address
+              - neighborhood
+              - city
+              - photos
+  /api/v1/occurrences/map:
+    get:
+      summary: GET /occurrences/map
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - occurrences
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            protocol:
+                              type: string
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            status:
+                              type: string
+                            category:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                code:
+                                  type: string
+                                name:
+                                  type: string
+                                icon:
+                                  type: string
+                                color:
+                                  type: string
+                                active:
+                                  type: boolean
+                      heatmap:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            latitude:
+                              type: number
+                            longitude:
+                              type: number
+                            weight:
+                              type: integer
+                      limit:
+                        type: integer
+              example:
+                data:
+                  items:
+                  - id: 00000000-0000-4000-8000-000000000001
+                    protocol: '#OG2026-000123'
+                    latitude: -15.0
+                    longitude: -48.0
+                    status: ABERTO
+                    category: *id001
+                  heatmap: *id018
+                  limit: 5000
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: categoryId
+        in: query
+        schema:
+          type: string
+      - name: secretariatId
+        in: query
+        schema:
+          type: string
+      - name: neighborhood
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: from
+        in: query
+        schema:
+          type: string
+      - name: to
+        in: query
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: string
+      - name: mine
+        in: query
+        schema:
+          type: string
+      - name: group
+        in: query
+        schema:
+          type: string
+  /api/v1/occurrences/{id}:
+    get:
+      summary: GET /occurrences/:id
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - occurrences
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      protocol:
+                        type: string
+                      userId:
+                        type: string
+                      categoryId:
+                        type: string
+                      description:
+                        type: string
+                      address:
+                        type: string
+                      latitude:
+                        type: number
+                      longitude:
+                        type: number
+                      neighborhood:
+                        type: string
+                      city:
+                        type: string
+                      status:
+                        type: string
+                      priority:
+                        type: string
+                      validationStatus:
+                        type: string
+                      duplicateOfId:
+                        type: string
+                        nullable: true
+                      createdAt:
+                        type: string
+                      category:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          code:
+                            type: string
+                          name:
+                            type: string
+                          icon:
+                            type: string
+                          color:
+                            type: string
+                          active:
+                            type: boolean
+                      secretariat:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          active:
+                            type: boolean
+                          categories:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                categoryId:
+                                  type: string
+                                secretariatId:
+                                  type: string
+                                category:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    code:
+                                      type: string
+                                    name:
+                                      type: string
+                                    icon:
+                                      type: string
+                                    color:
+                                      type: string
+                                    active:
+                                      type: boolean
+                      photos:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            url:
+                              type: string
+                            sortOrder:
+                              type: integer
+                      history:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            newStatus:
+                              type: string
+                            createdAt:
+                              type: string
+                      rating:
+                        type: string
+                        nullable: true
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  protocol: '#OG2026-000123'
+                  userId: 00000000-0000-4000-8000-000000000001
+                  categoryId: 00000000-0000-4000-8000-000000000001
+                  description: Buraco na rua
+                  address: Rua Exemplo, 1
+                  latitude: -15.0
+                  longitude: -48.0
+                  neighborhood: Centro
+                  city: Cidade Exemplo
+                  status: ABERTO
+                  priority: MEDIA
+                  validationStatus: PENDENTE
+                  duplicateOfId: null
+                  createdAt: '2026-11-18T12:00:00Z'
+                  category: *id001
+                  secretariat: *id009
+                  photos: *id019
+                  history:
+                  - id: 00000000-0000-4000-8000-000000000001
+                    newStatus: ABERTO
+                    createdAt: '2026-11-18T12:00:00Z'
+                  rating: null
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /api/v1/occurrences/{id}/status:
+    patch:
+      summary: PATCH /occurrences/:id/status
+      description: 'Acesso: ADMIN.'
+      tags:
+      - occurrences
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      protocol:
+                        type: string
+                      userId:
+                        type: string
+                      categoryId:
+                        type: string
+                      description:
+                        type: string
+                      address:
+                        type: string
+                      latitude:
+                        type: number
+                      longitude:
+                        type: number
+                      neighborhood:
+                        type: string
+                      city:
+                        type: string
+                      status:
+                        type: string
+                      priority:
+                        type: string
+                      validationStatus:
+                        type: string
+                      duplicateOfId:
+                        type: string
+                        nullable: true
+                      createdAt:
+                        type: string
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  protocol: '#OG2026-000123'
+                  userId: 00000000-0000-4000-8000-000000000001
+                  categoryId: 00000000-0000-4000-8000-000000000001
+                  description: Buraco na rua
+                  address: Rua Exemplo, 1
+                  latitude: -15.0
+                  longitude: -48.0
+                  neighborhood: Centro
+                  city: Cidade Exemplo
+                  status: EM_ANALISE
+                  priority: MEDIA
+                  validationStatus: VALIDADA
+                  duplicateOfId: null
+                  createdAt: '2026-11-18T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                observation:
+                  type: string
+            example:
+              status: EM_ANALISE
+              observation: Em análise pela equipe
+  /api/v1/occurrences/{id}/assignment:
+    patch:
+      summary: PATCH /occurrences/:id/assignment
+      description: 'Acesso: ADMIN.'
+      tags:
+      - occurrences
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      protocol:
+                        type: string
+                      userId:
+                        type: string
+                      categoryId:
+                        type: string
+                      description:
+                        type: string
+                      address:
+                        type: string
+                      latitude:
+                        type: number
+                      longitude:
+                        type: number
+                      neighborhood:
+                        type: string
+                      city:
+                        type: string
+                      status:
+                        type: string
+                      priority:
+                        type: string
+                      validationStatus:
+                        type: string
+                      duplicateOfId:
+                        type: string
+                        nullable: true
+                      createdAt:
+                        type: string
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  protocol: '#OG2026-000123'
+                  userId: 00000000-0000-4000-8000-000000000001
+                  categoryId: 00000000-0000-4000-8000-000000000001
+                  description: Buraco na rua
+                  address: Rua Exemplo, 1
+                  latitude: -15.0
+                  longitude: -48.0
+                  neighborhood: Centro
+                  city: Cidade Exemplo
+                  status: ABERTO
+                  priority: ALTA
+                  validationStatus: PENDENTE
+                  duplicateOfId: null
+                  createdAt: '2026-11-18T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                priority:
+                  type: string
+                secretariatId:
+                  type: string
+                  nullable: true
+            example:
+              priority: ALTA
+              secretariatId: null
+  /api/v1/occurrences/{id}/comments:
+    post:
+      summary: POST /occurrences/:id/comments
+      description: 'Acesso: ADMIN.'
+      tags:
+      - occurrences
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      occurrenceId:
+                        type: string
+                      body:
+                        type: string
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  occurrenceId: 00000000-0000-4000-8000-000000000001
+                  body: Vistoria solicitada
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+            example:
+              body: Verificar com equipe
+  /api/v1/occurrences/{id}/rating:
+    post:
+      summary: POST /occurrences/:id/rating
+      description: 'Acesso: Autenticado; verificar regras de perfil e propriedade.'
+      tags:
+      - occurrences
+      security:
+      - bearerAuth: []
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      occurrenceId:
+                        type: string
+                      score:
+                        type: integer
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  occurrenceId: 00000000-0000-4000-8000-000000000001
+                  score: 5
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                score:
+                  type: integer
+                comment:
+                  type: string
+            example:
+              score: 5
+              comment: Resolvido
+  /api/v1/announcements:
+    get:
+      summary: Listar avisos
+      description: 'Acesso: autenticado, conforme perfil.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        body:
+                          type: string
+                        active:
+                          type: boolean
+                        createdAt:
+                          type: string
+              example:
+                data:
+                - &id020
+                  id: 00000000-0000-4000-8000-000000000001
+                  title: Aviso
+                  body: Informamos a população.
+                  active: true
+                  createdAt: '2026-11-18T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+    post:
+      summary: Publicar aviso
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      body:
+                        type: string
+                      active:
+                        type: boolean
+                      createdAt:
+                        type: string
+              example:
+                data: *id020
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+                active:
+                  type: boolean
+            example:
+              title: Aviso
+              body: Informamos a população.
+              active: true
+  /api/v1/announcements/{id}:
+    patch:
+      summary: Atualizar aviso
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      body:
+                        type: string
+                      active:
+                        type: boolean
+                      createdAt:
+                        type: string
+              example:
+                data: *id020
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active:
+                  type: boolean
+            example:
+              active: false
+    delete:
+      summary: Despublicar aviso
+      description: 'Acesso: ADMIN.'
+      tags:
+      - management
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      body:
+                        type: string
+                      active:
+                        type: boolean
+                      createdAt:
+                        type: string
+              example:
+                data:
+                  id: 00000000-0000-4000-8000-000000000001
+                  title: Aviso
+                  body: Informamos a população.
+                  active: false
+                  createdAt: '2026-11-18T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /api/v1/account/delete/request:
+    post:
+      summary: Solicitar código de exclusão por e-mail
+      description: 'Acesso: autenticado, conforme perfil.'
+      tags:
+      - moderation
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                data:
+                  message: Confira seu e-mail para confirmar a exclusão.
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+            example:
+              password: Example-2026!
+  /api/v1/media/{token}:
+    get:
+      summary: Ler foto por URL assinada temporária
+      tags:
+      - media
+      security: []
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Imagem
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/webp:
+              schema:
+                type: string
+                format: binary
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    Error:
+      description: Erro padronizado
+      content:
+        application/json:
+          example:
+            code: VALIDATION_ERROR
+            message: Dados inválidos.

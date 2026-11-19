@@ -1,0 +1,32 @@
+{
+  "name": "@urbanizago/icons",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./web": {
+      "types": "./src/web.tsx",
+      "default": "./src/web.tsx"
+    },
+    "./native": {
+      "types": "./src/native.tsx",
+      "default": "./src/native.tsx"
+    },
+    "./paths": "./src/paths.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-native": "^0.81.0",
+    "react-native-svg": "^15.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native": {
+      "optional": true
+    },
+    "react-native-svg": {
+      "optional": true
+    }
+  }
+}

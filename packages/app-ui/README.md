@@ -1,0 +1,3 @@
+# UI compartilhada
+
+Componentes TypeScript/React Native usados no mobile e no web via React Native Web. `src/core.tsx`: autenticação, chamadas REST, hooks TanStack Query, login/formulários, perfil, notificações, layout. `src/admin.tsx`: todas as telas de gestão; `src/citizen.tsx`: fluxos do cidadão; `src/native.tsx`: adaptadores Expo e RN Maps. Web injeta adaptadores próprios em `apps/web-admin/src/App.tsx`. Não tem processo isolado; executa por meio dos apps (`npm run dev:web`, `dev:admin`, `dev:citizen`). Tipos e ícones dependem dos pacotes shared/icons/ui-tokens. Variáveis ficam nos apps. Alterações no admin refletem nos dois clientes.

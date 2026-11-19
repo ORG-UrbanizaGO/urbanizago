@@ -1,0 +1,82 @@
+{
+  "name": "@urbanizago/app-ui",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    "./core": {
+      "types": "./src/core.tsx",
+      "default": "./src/core.tsx"
+    },
+    "./admin": {
+      "types": "./src/admin.tsx",
+      "default": "./src/admin.tsx"
+    },
+    "./native": {
+      "types": "./src/native.tsx",
+      "default": "./src/native.tsx"
+    },
+    "./citizen": {
+      "types": "./src/citizen.tsx",
+      "default": "./src/citizen.tsx"
+    }
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-native": "^0.81.0",
+    "@tanstack/react-query": "^5.0.0",
+    "react-hook-form": "^7.0.0",
+    "@hookform/resolvers": "^3.0.0",
+    "zod": "^3.0.0",
+    "expo-image-picker": "~17.0.8",
+    "expo-location": "~19.0.7",
+    "react-native-maps": "1.20.1",
+    "expo-secure-store": "~15.0.7",
+    "expo-notifications": "~0.32.12",
+    "expo-device": "~8.0.9",
+    "expo-constants": "~18.0.9",
+    "expo-file-system": "~19.0.17",
+    "expo-sharing": "~14.0.7",
+    "react-native-safe-area-context": "~5.6.0",
+    "expo": "~58.0.0"
+  },
+  "dependencies": {
+    "@urbanizago/shared": "0.1.0",
+    "@urbanizago/icons": "0.1.0",
+    "@urbanizago/ui-tokens": "0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "expo-image-picker": {
+      "optional": true
+    },
+    "expo-location": {
+      "optional": true
+    },
+    "react-native-maps": {
+      "optional": true
+    },
+    "expo-secure-store": {
+      "optional": true
+    },
+    "expo-notifications": {
+      "optional": true
+    },
+    "expo-device": {
+      "optional": true
+    },
+    "expo-constants": {
+      "optional": true
+    },
+    "expo-file-system": {
+      "optional": true
+    },
+    "expo-sharing": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
+      "optional": true
+    },
+    "expo": {
+      "optional": true
+    }
+  }
+}

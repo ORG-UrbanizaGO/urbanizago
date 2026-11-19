@@ -1,0 +1,49 @@
+{
+  "name": "@urbanizago/api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "node scripts/prisma.cjs generate && tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "typecheck": "node scripts/prisma.cjs generate && tsc --noEmit",
+    "db:generate": "node scripts/prisma.cjs generate",
+    "db:migrate": "node scripts/prisma.cjs migrate deploy",
+    "db:seed": "node dist/seed.js",
+    "db:seed:dev": "tsx src/seed.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "pino": "^9.6.0",
+    "zod": "^3.24.4",
+    "@prisma/client": "6.19.0",
+    "prisma": "6.19.0",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "cookie-parser": "^1.4.7",
+    "express-rate-limit": "^7.5.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.0",
+    "@aws-sdk/client-s3": "^3.850.0",
+    "@aws-sdk/s3-request-presigner": "^3.850.0",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.8.1",
+    "node-cron": "^4.2.1",
+    "pdfkit": "^0.17.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/multer": "^2.0.0",
+    "@types/nodemailer": "^7.0.0",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/pdfkit": "^0.17.2"
+  }
+}

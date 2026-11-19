@@ -1,0 +1,3 @@
+# API REST
+
+Node.js 22, Express 5, TypeScript, PostgreSQL 16 e Prisma. `npm run dev:api` na raiz (infra e banco preparados), `npm run db:migrate`, `npm run db:seed:dev`, `npm run build -w @urbanizago/api`. Docker aplica migrations e seed no start. `/health`, `/docs`, `/api/v1`. Veja [contratos](../../docs/api/README.md), [banco](../../docs/modelagem-banco.md) e [deploy](../../docs/guia-deploy.md) para ambiente. `src/modules` contém rotas por domínio, `lib` serviços comuns, `middlewares` autorização, `jobs` filas, `config/env.ts` Zod. Schema e migrations em `prisma/`. Nomes de código em inglês, textos pt-BR. Não retorne hashes ou secrets na API; valide entradas e teste transações.

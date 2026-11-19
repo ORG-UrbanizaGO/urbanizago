@@ -1,0 +1,3 @@
+# Mobile admin
+
+Aplicativo React Native + Expo SDK 54, React Navigation, TanStack Query e TypeScript. Copie `.env.example` para `.env.local`, configure `EXPO_PUBLIC_API_URL`, `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` e opcionalmente `EXPO_PUBLIC_EAS_PROJECT_ID`. Com API ativa e dependências instaladas na raiz, execute `npm run dev:admin`. `App.tsx` integra navegação e sessão. Telas em `packages/app-ui/src/admin.tsx`, adaptadores nativos em `native.tsx`, componentes em `core.tsx`. Ícones SVG compartilhados. Consulte [guia mobile](../../docs/guia-mobile.md) para Android/iOS, Expo e push. Build de desenvolvimento recomendado para recursos nativos.
