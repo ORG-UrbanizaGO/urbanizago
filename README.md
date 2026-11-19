@@ -122,25 +122,3 @@ docker/            Configuração Nginx
 
 `dev`, `dev:api`, `dev:web`, `dev:citizen`, `dev:admin`, `build`, `typecheck`, `lint`, `format`, `db:generate`, `db:migrate`, `db:seed`, `db:seed:dev`, `docker:up`, `docker:down` e `test:smoke`. `build` compila API/web e gera bundles Android dos apps, não APKs assinados.
 
-## GitHub
-
-Crie um repositório **vazio**, preferencialmente privado, na sua organização. Substitua `SUA-ORG` pelo slug correto.
-
-```powershell
-git init
-git add .
-git commit -m "feat: initial UrbanizaGO full-stack release"
-git branch -M main
-git remote add origin https://github.com/SUA-ORG/urbanizago.git
-git push -u origin main
-```
-
-O `.gitignore` exclui `.env`, `.env.local`, dependências e builds. O primeiro `npm install` cria `package-lock.json`; revise e faça commit do lockfile. Os Dockerfiles usam instalações seletivas e não utilizam o lockfile raiz (limitação de reprodutibilidade). GitHub hospeda o código, não o banco e a API; para acesso público, configure hospedagem com HTTPS, SMTP e segredos reais. Nunca publique valores de desenvolvimento. Consulte [deploy](docs/guia-deploy.md) e [contribuição](docs/guia-contribuicao.md).
-
-## Documentação e validação
-
-- [Índice completo](docs/README.md) · [API e exemplos](docs/api/README.md) · [matriz de funcionalidades](docs/requisitos.md)
-- [Banco de dados](docs/modelagem-banco.md) · [Segurança](docs/seguranca.md) · [LGPD](docs/lgpd.md)
-- [Guia de homologação e limitações](docs/validacao.md)
-
-O código foi revisado estaticamente, mas o ambiente gerador não tinha Docker nem acesso ao npm. **Não há garantia de build ou funcionamento ponta a ponta até os testes locais.** Não há integração de IA nesta versão. As telas seguem a identidade visual do anexo, com composição adaptativa própria e logo SVG aproximado, não reprodução pixel a pixel. A licença deve ser definida pelo proprietário do projeto antes de publicação pública; nenhum direito de licença é concedido aqui por padrão.
